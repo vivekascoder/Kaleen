@@ -2,9 +2,12 @@
 
 import discord
 import re
+from discord.ext.commands import Bot
+from requests_html import HTMLSession
 
-TOKEN = "----"
 
+
+TOKEN = "NzcyMTk2OTY0MjMzNjQxOTk0.X53Kdg._E_vz3IPB6SlS5WrgOo7Cf54Ms4"
 WORDLIST = {
     'hi-hello': [
         'hi', 
@@ -22,8 +25,31 @@ ROADMAP = {
 KALEEN = {
     "image": './assets/images-1-4.jpeg'
 }
+BOT_PREFIX = ("?", "!")
+INTRO = """
+Name: 🔫 **Kaleen Bhaiya!!** (King of Mirzapur)
+
+✅ Hacker News Updator:
+COMMAND: `!news`
+RESULT: All news from the hacker news page.
+
+COMMAND: !news <news-no>
+RESULT: Particular news with link.
+
+✅ Roadmap Provider:
+COMMAND: `how`, `start` and a tech needs to be in your message query.
+RESULT: PRovide Roadmap.
+
+❌ Don't use word `mirzapur`.
+
+✅ Who is kaleen bhaiya:
+COMMAND: kaleen and kon/who needs to be in message.
+
+- @Kaleen
+"""
 
 client = discord.Client()
+session = HTMLSession()
 
 @client.event
 async def on_message(message):
@@ -49,6 +75,26 @@ async def on_message(message):
                 await message.channel.send(file=discord.File(image))
             await message.channel.send(f"{username}, Beta isa dekho or padhna chalu karo!!")
             break
+    
+    if msg.split()[0] == "!news":
+        url = "https://news.ycombinator.com/news"
+        data = "**Hacker News Updates by Kaleen Bhaiya!**\n\n"
+        r = session.get(url)
+        a_s = r.html.find("a.storylink", first=False)
+        if len(msg.split()) == 1:
+            for a in a_s:
+                data += str(a_s.index(a) + 1) + ". " + a.text + ".\n"
+            await message.channel.send(data)
+        elif msg.split()[1].isdigit() and int(msg.split()[1]) < len(a_s) + 1:
+            a = a_s[int(msg.split()[1]) - 1]
+            data += a.text + ".\n>> " + a.attrs['href']
+            await message.channel.send(data)
+
+    if msg == "!help":
+        await message.channel.send(INTRO)
+
+
 
 
 client.run(TOKEN)
+# bot.run(TOKEN)
