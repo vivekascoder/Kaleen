@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import discord
 import re
 from discord.ext.commands import Bot
@@ -7,7 +8,7 @@ from requests_html import HTMLSession
 
 
 
-TOKEN = "NzcyMTk2OTY0MjMzNjQxOTk0.X53Kdg._E_vz3IPB6SlS5WrgOo7Cf54Ms4"
+TOKEN = os.getenv("TOKEN")
 WORDLIST = {
     'hi-hello': [
         'hi', 
