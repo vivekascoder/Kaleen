@@ -3,6 +3,7 @@
 import os
 import discord
 import re
+import random
 from discord.ext.commands import Bot
 from requests_html import HTMLSession
 
@@ -57,6 +58,14 @@ def motivation_pill():
     pill = f"\"{res['content']}\" - {res['author']}"
     return pill
 
+
+def get_random_qoute():
+    with open("ideas.json", "r") as file:
+        data = json.load(file)
+        return random.choice(data['ideas'])
+
+
+
 client = discord.Client()
 session = HTMLSession()
 
@@ -101,8 +110,15 @@ async def on_message(message):
 
     if msg == "!help":
         await message.channel.send(INTRO)
+
+    ## For Getting an random quote.
     if msg == "!inspire":
         await message.channel.send(motivation_pill())
+
+    ## For Getting an random idea.
+    if msg == "!idea":
+        await message.channel.send(get_random_quote())
+
 
 
 
