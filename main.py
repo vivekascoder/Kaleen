@@ -76,6 +76,8 @@ async def on_message(message):
     msg = str(message.content).lower()
     if message.author == client.user:
         return 
+    if msg.split(' ')[0] in WORDLIST['hi-hello']:
+        msg = msg.split(' ')[0]
     for i in WORDLIST['hi-hello']:
         if i in msg:
             await message.channel.send(f"Suno {username}, ye hi, hello thik hai lekin Mirzapur hamara hai.")
@@ -120,7 +122,19 @@ async def on_message(message):
         await message.channel.send(get_random_quote())
 
 
+## Greeting new member when then join the DIVCORN VIRTUAL CAMPS
+async def on_member_join(member):
 
+    await member.channel.send(
+        f'Hello {member.name}, Welcom in DIVCORN VIRTUAL CAMPUS. \n A Dev community by developers for devlopers' 
+    )
+    # Create a direct message
+    await member.create_dm()
+    await member.dm_channel.send(
+        f'Hello {member.name}, Welcom in DIVCORN VIRTUAL CAMPUS. \n A Dev community by developers for devlopers' 
+    )
+
+    
 
 client.run(TOKEN)
 # bot.run(TOKEN)
