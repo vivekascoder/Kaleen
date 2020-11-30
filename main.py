@@ -48,6 +48,14 @@ COMMAND: kaleen and kon/who needs to be in message.
 - @Kaleen
 """
 
+
+def motivation_pill():
+    MOTIVATION_PILL_URL = 'https://api.quotable.io/random'
+    response = requests.get(MOTIVATION_PILL_URL)
+    res = response.json()
+    pill = f"\"{res['content']}\" - {res['author']}"
+    return pill
+
 client = discord.Client()
 session = HTMLSession()
 
@@ -92,7 +100,8 @@ async def on_message(message):
 
     if msg == "!help":
         await message.channel.send(INTRO)
-
+    if msg == "!inspire":
+        await message.channel.send(motivation_pill())
 
 
 
